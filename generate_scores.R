@@ -5,6 +5,7 @@ library(tidyr)
 library(lubridate)
 library(broom)
 library(purrr)
+library(digest)
 
 # define function to get the update data
 get_updates <- function() {
@@ -95,12 +96,12 @@ get_slopes <- function(update_counts) {
 
   # normalize the estimates
   slopes <- slopes %>%
-    mutate(estimate_scaled = scale(estimate),
-           created_at_date = Sys.Date()) %>%
-    select(user_id, estimate_scaled, p.value, created_at_date)
+    mutate(at_risk = estimate <= -5 & p.value <= 0.05, created_at_date = Sys.Date()) %>%
+    mutate(id = digest(paste0(user_id, created_at_date, estimate), algo = "md5")) %>%
+    select(id, user_id, at_risk, estimate, p.value, created_at_date)
 
   # name columns
-  colnames(slopes) <- c('user_id', 'score', 'p_value', 'created_at_date')
+  colnames(slopes) <- c('id', 'user_id', 'at_risk', 'score', 'p_value', 'created_at_date')
 
   # return the estimates
   return(slopes)
@@ -115,7 +116,7 @@ get_historic_data <- function() {
   old_df <- query_db("select * from customer_health_scores", con)
 
   # set column names
-  colnames(old_df) <- c('user_id', 'score', 'p_value', 'created_at_date')
+  colnames(old_df) <- c('id', 'user_id', 'at_risk', 'score', 'p_value', 'created_at_date')
 
   # return the old data
   old_df
