@@ -2,6 +2,7 @@ FROM rocker/tidyverse
 
 RUN install2.r --error \
     -r 'http://cran.rstudio.com' \
+    digest \
   && installGithub.r \
     jwinternheimer/buffer \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
