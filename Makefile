@@ -1,4 +1,4 @@
-NAME = julheimer/customer_health_scores:beta
+NAME = julheimer/customer-health-scores:beta
 
 .PHONY: all build run dev
 
