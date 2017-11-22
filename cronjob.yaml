@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: customer-health-scores
 spec:
-  schedule: "0 14 * * *"
+  schedule: "0 16 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 10
   jobTemplate:
