@@ -1,4 +1,4 @@
-NAME = julheimer/customer-health-scores:beta
+NAME = bufferapp/customer-health-scores:beta
 
 .PHONY: all build run dev
 
