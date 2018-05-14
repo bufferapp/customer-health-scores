@@ -1,9 +1,9 @@
-apiVersion: batch/v2alpha1
+apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: customer-health-scores
 spec:
-  schedule: "0 16 * * *"
+  schedule: "0 10 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 10
   jobTemplate:
