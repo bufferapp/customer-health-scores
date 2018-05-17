@@ -1,14 +1,18 @@
-NAME = bufferapp/customer-health-scores:beta
-
-.PHONY: all build run dev
+NAME = bufferapp/customer-health-scores:0.1.0
 
 all: run
 
 build:
 	docker build -t $(NAME) .
 
-run:
-	docker run -it --rm --env-file ./.env $(NAME)
+run: build
+	docker run -it --rm --env-file .env $(NAME)
 
-dev:
-	docker run -v $(PWD):/app -it --rm --env-file ./.env $(NAME)
+push: build
+	docker push $(NAME)
+
+dev: build
+	docker run -v $(PWD):/app -it --rm --env-file .env $(NAME) bash
+
+deploy: push
+	kubectl apply -f kubernetes/cronjob.yaml
