@@ -15,4 +15,4 @@ dev: build
 	docker run -v $(PWD):/app -it --rm --env-file .env $(NAME) bash
 
 deploy: push
-	kubectl apply -f kubernetes/cronjob.yaml
+	kubectl apply -f cronjob.yaml

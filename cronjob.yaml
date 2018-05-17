@@ -3,16 +3,14 @@ kind: CronJob
 metadata:
   name: customer-health-scores
 spec:
-  schedule: "0 10 * * *"
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 10
+  schedule: "0 23 */2 * *"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: customer-health-scores
-            image: bufferapp/customer-health-scores:beta
+            image: bufferapp/customer-health-scores:0.1.0
             env:
               - name: REDSHIFT_DB_NAME
                 valueFrom:
@@ -40,4 +38,6 @@ spec:
                     name: redshift
                     key: port
             imagePullPolicy: Always
+          imagePullSecrets:
+            - name: dockerhub
           restartPolicy: OnFailure
