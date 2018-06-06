@@ -16,22 +16,22 @@ get_updates <- function() {
   # define query
   query <- "
   select
-    u.user_id
-    , u.billing_plan
-    , u.billing_stripe_id as customer_id
+    u.id as user_id
+    , u.billing_plan_name
+    , u.billing_stripe_customer_id as customer_id
     , date_trunc('week', u.created_at) as user_created_at
     , date_trunc('week', up.created_at) as update_week
     , count(distinct up.id) as update_count
   from dbt.updates as up
   left join dbt.profiles as p
   on p.id = up.profile_id
-  left join users as u
-  on p.user_id = u.user_id
-  where u.billing_plan != 'individual'
-  and u.billing_plan != 'awesome'
-  and u.billing_plan != 'new_awesome'
-  and u.billing_plan != '1'
-  and u.billing_plan is not null
+  left join dbt.users as u
+  on p.user_id = u.id
+  where u.billing_plan_name != 'individual'
+  and u.billing_plan_name != 'awesome'
+  and u.billing_plan_name != 'new_awesome'
+  and u.billing_plan_name != '1'
+  and u.billing_plan_name is not null
   and up.created_at >= (current_date - 180)
   and up.status <> 'service'
   group by 1, 2, 3, 4, 5
